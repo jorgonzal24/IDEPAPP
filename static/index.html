@@ -1,0 +1,1041 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IDEP · RED LAB · Ecosistema Productivo Biocultural de Caldas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;0,700;1,300;1,400&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+/* ── RESET ───────────────────────────────────────────────── */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+
+:root{
+  --forest:   #1a3028;
+  --moss:     #2d5040;
+  --sage:     #4a7c5f;
+  --fern:     #7aab8a;
+  --mist:     #e8ede9;
+  --cream:    #f5f2ea;
+  --paper:    #faf8f3;
+  --gold:     #c4973a;
+  --amber:    #e8b84b;
+  --ink:      #1a1c18;
+  --mid:      #6b7268;
+  --border:   #d4d9d0;
+  --white:    #ffffff;
+  --rust:     #8b3a2a;
+}
+
+body{
+  font-family:'Outfit',sans-serif;
+  background:var(--paper);
+  color:var(--ink);
+  min-height:100vh;
+  overflow-x:hidden;
+}
+
+/* ── BACKGROUND TEXTURE ─────────────────────────────────── */
+body::before{
+  content:'';
+  position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 80% 60% at 15% 20%, rgba(26,48,40,.06) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 80% at 85% 75%, rgba(74,124,95,.04) 0%, transparent 55%);
+  pointer-events:none;z-index:0;
+}
+
+/* ── SHELL ───────────────────────────────────────────────── */
+.shell{
+  position:relative;z-index:1;
+  max-width:740px;
+  margin:0 auto;
+  padding:0 1.25rem 6rem;
+}
+
+/* ── MASTHEAD ────────────────────────────────────────────── */
+.masthead{
+  padding:3rem 0 2.5rem;
+  border-bottom:1px solid var(--border);
+  margin-bottom:2.5rem;
+}
+.org-line{
+  display:flex;align-items:center;gap:.6rem;
+  font-size:.68rem;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;
+  color:var(--sage);margin-bottom:1.5rem;
+}
+.org-line::before{
+  content:'';width:28px;height:2px;
+  background:linear-gradient(90deg,var(--gold),var(--sage));
+  flex-shrink:0;
+}
+.masthead h1{
+  font-family:'Cormorant Garamond',serif;
+  font-size:clamp(2rem,5vw,3.2rem);
+  font-weight:300;
+  line-height:1.05;
+  color:var(--forest);
+  letter-spacing:-.02em;
+  margin-bottom:1rem;
+}
+.masthead h1 em{
+  font-style:italic;
+  color:var(--sage);
+}
+.masthead-meta{
+  display:grid;grid-template-columns:1fr 1fr;
+  gap:.5rem 2rem;
+  font-size:.8rem;color:var(--mid);
+  padding-top:1rem;
+  border-top:1px solid var(--border);
+}
+.masthead-meta span strong{color:var(--ink);font-weight:500;}
+
+/* ── PROGRESS ────────────────────────────────────────────── */
+.progress-shell{
+  margin-bottom:2.5rem;
+}
+.progress-top{
+  display:flex;justify-content:space-between;
+  align-items:baseline;margin-bottom:.5rem;
+}
+.progress-step-name{
+  font-size:.72rem;font-weight:600;
+  letter-spacing:.12em;text-transform:uppercase;color:var(--mid);
+}
+.progress-fraction{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1rem;color:var(--gold);font-weight:600;
+}
+.progress-rail{
+  height:3px;background:var(--border);border-radius:100px;overflow:hidden;
+}
+.progress-car{
+  height:100%;background:linear-gradient(90deg,var(--forest),var(--sage));
+  border-radius:100px;transition:width .6s cubic-bezier(.4,0,.2,1);
+}
+.dots{display:flex;gap:.45rem;margin-top:.55rem;}
+.dot{
+  width:7px;height:7px;border-radius:50%;
+  background:var(--border);border:1.5px solid var(--border);
+  transition:all .3s;
+}
+.dot.done{background:var(--sage);border-color:var(--sage);}
+.dot.active{background:var(--gold);border-color:var(--gold);transform:scale(1.4);}
+
+/* ── STEP WRAPPER ────────────────────────────────────────── */
+.step{display:none;}
+.step.active{display:block;animation:appear .4s ease both;}
+@keyframes appear{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+
+/* ── SECTION HEADING ─────────────────────────────────────── */
+.sec-head{margin-bottom:1.75rem;}
+.sec-num{
+  font-size:.65rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:.3rem;
+}
+.sec-title{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.7rem;font-weight:400;
+  color:var(--forest);line-height:1.15;
+  margin-bottom:.5rem;
+}
+.sec-intro{
+  font-size:.88rem;color:var(--mid);line-height:1.75;
+  max-width:580px;
+}
+
+/* ── CARD ────────────────────────────────────────────────── */
+.card{
+  background:var(--white);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:1.6rem 1.75rem;
+  margin-bottom:1rem;
+  transition:border-color .2s,box-shadow .2s;
+}
+.card:focus-within{
+  border-color:var(--sage);
+  box-shadow:0 0 0 3px rgba(74,124,95,.1);
+}
+
+/* ── FORM FIELDS ─────────────────────────────────────────── */
+.field{margin-bottom:1rem;}
+.field label{
+  display:block;font-size:.78rem;font-weight:500;
+  margin-bottom:.35rem;color:var(--ink);
+}
+.field label .req{color:var(--rust);}
+.field input,
+.field select,
+.field textarea{
+  width:100%;padding:.6rem .9rem;
+  border:1px solid var(--border);border-radius:8px;
+  font-family:'Outfit',sans-serif;font-size:.88rem;
+  color:var(--ink);background:var(--paper);outline:none;
+  transition:border-color .2s,box-shadow .2s;
+}
+.field input:focus,.field select:focus,.field textarea:focus{
+  border-color:var(--sage);background:#fff;
+  box-shadow:0 0 0 3px rgba(74,124,95,.1);
+}
+.field input[disabled]{color:var(--mid);cursor:default;}
+.field textarea{resize:vertical;min-height:96px;line-height:1.65;}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.85rem;}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.75rem;}
+@media(max-width:560px){.g2,.g3{grid-template-columns:1fr;}}
+
+/* word count */
+.wc{text-align:right;font-size:.68rem;color:var(--mid);margin-top:.2rem;}
+.wc.over{color:var(--rust);font-weight:600;}
+
+/* ── ACTOR PILLS ─────────────────────────────────────────── */
+.actor-wrap{display:flex;flex-wrap:wrap;gap:.5rem;margin-bottom:.5rem;}
+.actor-pill{
+  display:flex;align-items:center;gap:.4rem;
+  padding:.5rem 1rem;
+  border:1.5px solid var(--border);border-radius:100px;
+  background:var(--paper);cursor:pointer;
+  font-size:.82rem;font-weight:500;
+  transition:all .2s;user-select:none;
+}
+.actor-pill:hover{border-color:var(--sage);background:var(--mist);}
+.actor-pill.active{
+  border-color:var(--forest);background:var(--forest);
+  color:#fff;
+}
+
+/* ── ECOSYSTEM CHIPS ─────────────────────────────────────── */
+.eco-wrap{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:.75rem;}
+.eco-chip{
+  padding:.38rem .8rem;
+  border:1px solid var(--border);border-radius:100px;
+  font-size:.76rem;cursor:pointer;
+  background:var(--paper);
+  transition:all .18s;user-select:none;
+}
+.eco-chip:hover{border-color:var(--sage);}
+.eco-chip.active{border-color:var(--sage);background:var(--sage);color:#fff;font-weight:500;}
+.eco-chip.locked{opacity:.35;pointer-events:none;}
+.eco-note{font-size:.75rem;color:var(--mid);font-style:italic;margin-bottom:.6rem;}
+
+/* ── NARRATIVE QUESTION ──────────────────────────────────── */
+.nq{margin-bottom:1.75rem;}
+.nq-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:.8rem;font-weight:600;color:var(--gold);
+  letter-spacing:.1em;margin-bottom:.2rem;
+}
+.nq-text{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.2rem;font-weight:400;
+  color:var(--forest);line-height:1.45;
+  margin-bottom:.5rem;
+}
+.nq-hint{
+  font-size:.78rem;color:var(--mid);
+  line-height:1.65;font-style:italic;
+  border-left:2px solid var(--amber);
+  padding-left:.75rem;margin-bottom:.65rem;
+}
+.nq textarea{
+  width:100%;
+  padding:.7rem .95rem;
+  border:1px solid var(--border);border-radius:8px;
+  font-family:'Outfit',sans-serif;font-size:.87rem;
+  color:var(--ink);background:var(--paper);
+  outline:none;resize:vertical;min-height:100px;
+  line-height:1.7;
+  transition:border-color .2s,box-shadow .2s;
+}
+.nq textarea:focus{
+  border-color:var(--sage);background:#fff;
+  box-shadow:0 0 0 3px rgba(74,124,95,.1);
+}
+.nq-divider{border:none;border-top:1px dashed var(--border);margin:1.75rem 0;}
+
+/* ── CONVERGENT ──────────────────────────────────────────── */
+.conv-q{
+  margin-bottom:1.4rem;
+  padding-bottom:1.4rem;
+  border-bottom:1px solid var(--mist);
+}
+.conv-q:last-child{border-bottom:none;margin-bottom:0;}
+.conv-head{
+  display:flex;align-items:baseline;gap:.6rem;
+  margin-bottom:.35rem;
+}
+.conv-icon{font-size:1.1rem;line-height:1;}
+.conv-label{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem;font-weight:600;color:var(--forest);
+}
+.conv-dim{
+  font-size:.67rem;color:var(--mid);font-style:italic;
+  margin-left:auto;white-space:nowrap;
+}
+.conv-narrative{
+  font-size:.83rem;color:var(--mid);
+  font-style:italic;line-height:1.65;
+  margin-bottom:.75rem;
+}
+.conv-opts{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:.3rem;
+}
+@media(max-width:500px){.conv-opts{grid-template-columns:1fr;}}
+.conv-btn{
+  padding:.45rem .75rem;
+  border:1px solid var(--border);border-radius:7px;
+  background:var(--paper);
+  font-family:'Outfit',sans-serif;font-size:.76rem;
+  text-align:left;cursor:pointer;
+  color:var(--ink);line-height:1.35;
+  transition:all .18s;
+}
+.conv-btn:hover{border-color:var(--sage);background:var(--mist);transform:translateX(2px);}
+.conv-btn.active{
+  border-color:var(--sage);background:var(--sage);
+  color:#fff;font-weight:500;transform:translateX(2px);
+}
+
+/* SCORE PANEL */
+.score-panel{
+  background:var(--forest);
+  border-radius:12px;padding:1.25rem 1.5rem;
+  margin-bottom:1.5rem;color:#fff;
+}
+.score-top{
+  display:flex;justify-content:space-between;
+  align-items:center;margin-bottom:.6rem;
+}
+.score-title{font-size:.7rem;font-weight:500;letter-spacing:.12em;text-transform:uppercase;opacity:.65;}
+.score-num{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2rem;font-weight:700;color:var(--amber);
+}
+.score-rail{height:6px;background:rgba(255,255,255,.15);border-radius:100px;overflow:hidden;margin-bottom:.5rem;}
+.score-car{height:100%;background:linear-gradient(90deg,var(--amber),var(--fern));border-radius:100px;transition:width .4s ease;}
+.score-label{font-size:.82rem;font-weight:500;opacity:.85;}
+.score-sub{font-size:.7rem;opacity:.5;margin-top:.15rem;font-style:italic;}
+
+/* ── NAV ─────────────────────────────────────────────────── */
+.nav{
+  display:flex;justify-content:space-between;
+  align-items:center;
+  margin-top:2rem;padding-top:1.5rem;
+  border-top:1px solid var(--border);
+}
+.btn{
+  display:inline-flex;align-items:center;gap:.4rem;
+  padding:.6rem 1.5rem;border-radius:8px;
+  font-family:'Outfit',sans-serif;font-size:.82rem;
+  font-weight:600;letter-spacing:.03em;
+  cursor:pointer;border:none;transition:all .2s;
+}
+.btn-main{background:var(--forest);color:#fff;}
+.btn-main:hover{background:var(--moss);transform:translateY(-1px);box-shadow:0 6px 18px rgba(26,48,40,.25);}
+.btn-back{background:transparent;color:var(--mid);border:1px solid var(--border);}
+.btn-back:hover{border-color:var(--mid);color:var(--ink);}
+.btn-send{background:var(--sage);color:#fff;}
+.btn-send:hover{background:var(--moss);transform:translateY(-1px);box-shadow:0 6px 18px rgba(45,80,64,.3);}
+.btn:disabled{opacity:.35;pointer-events:none;}
+.nav-label{font-size:.72rem;color:var(--mid);}
+
+/* ── ALERT ───────────────────────────────────────────────── */
+.alert{
+  background:rgba(139,58,42,.07);
+  border-left:3px solid var(--rust);
+  padding:.55rem .9rem;border-radius:0 7px 7px 0;
+  font-size:.8rem;color:var(--rust);
+  margin-top:.75rem;display:none;
+}
+.alert.on{display:block;}
+
+/* info strip */
+.info{
+  background:rgba(74,124,95,.08);
+  border-left:3px solid var(--sage);
+  padding:.55rem .9rem;border-radius:0 7px 7px 0;
+  font-size:.8rem;color:var(--moss);
+  margin-top:.6rem;display:none;
+}
+.info.on{display:block;}
+
+/* ── SENDING ─────────────────────────────────────────────── */
+.veil{
+  display:none;position:fixed;inset:0;
+  background:rgba(26,48,40,.75);z-index:999;
+  align-items:center;justify-content:center;flex-direction:column;gap:1rem;
+}
+.veil.on{display:flex;}
+.spin{
+  width:44px;height:44px;
+  border:3px solid rgba(255,255,255,.2);
+  border-top-color:var(--amber);
+  border-radius:50%;animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+.veil-txt{color:#fff;font-size:.9rem;font-weight:500;letter-spacing:.05em;}
+
+/* ── SUCCESS ─────────────────────────────────────────────── */
+.success{
+  text-align:center;
+  padding:4rem 1rem 2rem;
+  animation:appear .5s ease both;
+}
+.success-mark{font-size:3.5rem;display:block;margin-bottom:1rem;}
+.success h2{
+  font-family:'Cormorant Garamond',serif;
+  font-size:2.2rem;font-weight:400;
+  color:var(--forest);margin-bottom:.75rem;
+}
+.success p{color:var(--mid);max-width:440px;margin:0 auto 1.5rem;line-height:1.75;font-size:.9rem;}
+.success-seq{
+  display:inline-block;
+  background:rgba(74,124,95,.1);border:1px solid var(--sage);
+  color:var(--moss);padding:.35rem .9rem;border-radius:100px;
+  font-size:.8rem;font-weight:600;margin-bottom:1.25rem;
+}
+.success-btns{display:flex;flex-direction:column;align-items:center;gap:.6rem;}
+.admin-box{
+  background:var(--white);border:1px solid var(--border);
+  border-radius:12px;padding:1.25rem 1.5rem;
+  margin-top:2rem;text-align:left;
+}
+.admin-box h3{
+  font-family:'Cormorant Garamond',serif;
+  font-size:1.1rem;color:var(--forest);margin-bottom:.6rem;
+}
+.admin-row{display:flex;align-items:center;gap:.75rem;flex-wrap:wrap;}
+.count-pill{
+  background:rgba(26,48,40,.07);border:1px solid rgba(26,48,40,.15);
+  color:var(--forest);padding:.35rem .85rem;border-radius:7px;
+  font-size:.8rem;font-weight:600;
+}
+
+/* ── FOOTER ──────────────────────────────────────────────── */
+.footer{
+  margin-top:5rem;padding-top:1.5rem;
+  border-top:1px solid var(--border);
+  font-size:.7rem;color:var(--mid);line-height:1.9;
+}
+.footer strong{color:var(--ink);}
+</style>
+</head>
+<body>
+
+<div class="veil" id="veil"><div class="spin"></div><div class="veil-txt">Guardando respuesta…</div></div>
+
+<div class="shell">
+
+  <!-- MASTHEAD -->
+  <header class="masthead">
+    <div class="org-line">RED LAB · Universidad de Caldas · Minciencias</div>
+    <h1>Ecosistema Productivo<br><em>Biocultural de Caldas</em></h1>
+    <div class="masthead-meta">
+      <span><strong>Instrumento:</strong> IDEP · Diagnóstico Narrativo</span>
+      <span><strong>Investigador:</strong> Jorge E. González Granados</span>
+      <span><strong>Programa:</strong> Doctorado en Diseño y Creación</span>
+      <span><strong>Contacto:</strong> Cel. 318 7008400</span>
+    </div>
+  </header>
+
+  <!-- PROGRESS -->
+  <div class="progress-shell" id="progressShell">
+    <div class="progress-top">
+      <span class="progress-step-name" id="pLabel">Presentación</span>
+      <span class="progress-fraction" id="pFrac">1 · 5</span>
+    </div>
+    <div class="progress-rail"><div class="progress-car" id="pCar" style="width:20%"></div></div>
+    <div class="dots" id="dots"></div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- PASO 0 · PRESENTACIÓN + IDENTIFICACIÓN               -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="step active" id="step-0">
+    <div class="sec-head">
+      <div class="sec-num">Punto de partida</div>
+      <div class="sec-title">Antes de comenzar,<br>cuéntenos quién es usted</div>
+      <p class="sec-intro">Esta conversación toma entre 15 y 20 minutos. No hay respuestas correctas ni incorrectas. Nos interesa su mirada sobre lo que ocurre en el ecosistema productivo de Caldas, no una autoevaluación de su organización.</p>
+    </div>
+
+    <div class="card">
+      <div class="g2">
+        <div class="field"><label>Su nombre <span class="req">*</span></label><input type="text" id="f_nombre" placeholder="Nombre completo"></div>
+        <div class="field"><label>Rol que desempeña</label><input type="text" id="f_cargo" placeholder="Ej: Investigadora, Gerente, Asesor..."></div>
+        <div class="field"><label>Correo electrónico <span class="req">*</span></label><input type="email" id="f_email" placeholder="correo@ejemplo.com"></div>
+        <div class="field"><label>Teléfono / WhatsApp</label><input type="tel" id="f_telefono" placeholder="+57 300..."></div>
+      </div>
+      <div class="field"><label>Organización a la que pertenece <span class="req">*</span></label><input type="text" id="f_org" placeholder="Nombre de su institución u organización"></div>
+      <div class="g2">
+        <div class="field"><label>Municipio</label><input type="text" id="f_ciudad" placeholder="Ej: Manizales, Riosucio..."></div>
+        <div class="field"><label>Subregión de Caldas</label>
+          <select id="f_region">
+            <option value="">— Seleccione —</option>
+            <option>Alto Occidente</option><option>Bajo Occidente</option>
+            <option>Norte</option><option>Magdalena Caldense</option>
+            <option>Alto Oriente</option><option>Bajo Oriente</option>
+            <option>Centro Sur (Manizales)</option>
+          </select>
+        </div>
+      </div>
+      <div class="field" style="display:none"><input type="text" id="f_fecha" disabled></div>
+    </div>
+
+    <div class="sec-head" style="margin-top:2rem;">
+      <div class="sec-title" style="font-size:1.35rem;">¿Desde qué lugar del ecosistema<br>nos habla usted?</div>
+      <p class="sec-intro" style="margin-top:.4rem;">Seleccione el tipo de actor con el que más se identifica.</p>
+    </div>
+
+    <div class="card">
+      <div class="actor-wrap" id="actorWrap">
+        <div class="actor-pill" data-id="academia" data-label="Academia" onclick="pickActor(this)">🎓 Academia / Universidad</div>
+        <div class="actor-pill" data-id="empresa"  data-label="Empresa"  onclick="pickActor(this)">🏭 Empresa / Industria</div>
+        <div class="actor-pill" data-id="gobierno" data-label="Gobierno" onclick="pickActor(this)">🏛️ Gobierno / Estado</div>
+        <div class="actor-pill" data-id="sociedad" data-label="Sociedad Civil" onclick="pickActor(this)">🌿 Sociedad Civil</div>
+        <div class="actor-pill" data-id="media"    data-label="Medios / TIC" onclick="pickActor(this)">📡 Medios / TIC</div>
+      </div>
+
+      <div class="field" id="typologyField" style="display:none;margin-top:.75rem;">
+        <label>¿Y más específicamente?</label>
+        <select id="f_typology"><option value="">— Seleccione —</option></select>
+      </div>
+      <div class="info" id="actorInfo"></div>
+    </div>
+
+    <div class="sec-head" style="margin-top:2rem;">
+      <div class="sec-title" style="font-size:1.35rem;">¿En qué sectores productivos<br>tiene mayor presencia?</div>
+      <p class="sec-intro" style="margin-top:.4rem;">Seleccione hasta 3 ecosistemas donde su organización tiene incidencia real.</p>
+    </div>
+
+    <div class="card">
+      <p class="eco-note">Seleccionados: <span id="ecoCount">0</span> / 3</p>
+      <div class="eco-wrap" id="ecoWrap"></div>
+    </div>
+
+    <div class="alert" id="alert-0">Por favor complete su nombre, correo y organización, y seleccione su tipo de actor.</div>
+    <div class="nav">
+      <span></span>
+      <span class="nav-label">1 · 5</span>
+      <button class="btn btn-main" onclick="next(0)">Continuar →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- PASO 1 · NARRATIVA DEL ECOSISTEMA                    -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="step" id="step-1">
+    <div class="sec-head">
+      <div class="sec-num">Parte I · La mirada desde afuera</div>
+      <div class="sec-title">Cuéntenos cómo ve<br>el ecosistema</div>
+      <p class="sec-intro">Hable del ecosistema productivo de Caldas como si lo observara desde afuera. No se evalúe a sí mismo. Nos interesa lo que usted percibe que ocurre en el territorio.</p>
+    </div>
+
+    <div class="card">
+
+      <div class="nq">
+        <div class="nq-num">Pregunta 1 de 6</div>
+        <div class="nq-text">Si tuviera que describir el ecosistema productivo de Caldas a alguien que nunca lo ha visto, ¿qué le diría que está pasando ahí?</div>
+        <div class="nq-hint">Piense en imágenes, metáforas o situaciones concretas. ¿Está el ecosistema en movimiento, estancado, disperso, en construcción? ¿Qué lo caracteriza hoy?</div>
+        <textarea id="n1" rows="4" placeholder="El ecosistema de Caldas hoy se caracteriza por…" oninput="wc(this,'wc1')"></textarea>
+        <div class="wc" id="wc1">0 / 200 palabras</div>
+      </div>
+
+      <hr class="nq-divider">
+
+      <div class="nq">
+        <div class="nq-num">Pregunta 2 de 6</div>
+        <div class="nq-text">¿Cuáles son los dos o tres nudos críticos que impiden que el ecosistema funcione mejor?</div>
+        <div class="nq-hint">Un nudo crítico es algo que traba el funcionamiento del sistema: puede ser una desconexión entre actores, una cadena productiva rota, falta de información, desconfianza, ausencia de liderazgo, o cualquier otra situación que limite el potencial del territorio.</div>
+        <textarea id="n2" rows="4" placeholder="Los principales obstáculos que se observan son…" oninput="wc(this,'wc2')"></textarea>
+        <div class="wc" id="wc2">0 / 200 palabras</div>
+      </div>
+
+      <hr class="nq-divider">
+
+      <div class="nq">
+        <div class="nq-num">Pregunta 3 de 6</div>
+        <div class="nq-text">¿Qué actores o fuerzas están moviendo el ecosistema hacia adelante, aunque sea lentamente?</div>
+        <div class="nq-hint">Pueden ser organizaciones, personas, proyectos, políticas o dinámicas de mercado que están generando transformaciones positivas en el territorio, aunque todavía no sean suficientes o visibles para todos.</div>
+        <textarea id="n3" rows="4" placeholder="Lo que sí está funcionando o avanzando en el ecosistema es…" oninput="wc(this,'wc3')"></textarea>
+        <div class="wc" id="wc3">0 / 200 palabras</div>
+      </div>
+
+      <hr class="nq-divider">
+
+      <div class="nq">
+        <div class="nq-num">Pregunta 4 de 6</div>
+        <div class="nq-text">¿Qué tan bien se conocen entre sí los actores del ecosistema? ¿Se hablan, se articulan, se confían información?</div>
+        <div class="nq-hint">Piense en si existe un mapa compartido de quiénes son los actores del ecosistema. ¿Hay espacios donde se encuentran? ¿Fluye la información entre ellos? ¿O cada uno opera en su propio silo?</div>
+        <textarea id="n4" rows="4" placeholder="En cuanto a cómo se relacionan los actores entre sí, lo que se observa es…" oninput="wc(this,'wc4')"></textarea>
+        <div class="wc" id="wc4">0 / 200 palabras</div>
+      </div>
+
+      <hr class="nq-divider">
+
+      <div class="nq">
+        <div class="nq-num">Pregunta 5 de 6</div>
+        <div class="nq-text">Si el ecosistema pudiera hablar, ¿qué diría que necesita con urgencia?</div>
+        <div class="nq-hint">Esta pregunta invita a proyectarse. Imagine que el ecosistema tiene voz propia. ¿Qué pediría que cambiara? ¿Qué recursos, conexiones, condiciones o decisiones reclama para poder funcionar mejor?</div>
+        <textarea id="n5" rows="4" placeholder="El ecosistema diría que necesita urgentemente…" oninput="wc(this,'wc5')"></textarea>
+        <div class="wc" id="wc5">0 / 200 palabras</div>
+      </div>
+
+      <hr class="nq-divider">
+
+      <div class="nq">
+        <div class="nq-num">Pregunta 6 de 6</div>
+        <div class="nq-text">¿Qué oportunidad concreta ve usted en el horizonte que el ecosistema todavía no está aprovechando?</div>
+        <div class="nq-hint">Puede ser una tendencia global, un recurso territorial desaprovechado, una política pública disponible, una alianza posible o un nicho de mercado. ¿Qué está ahí esperando que alguien lo active?</div>
+        <textarea id="n6" rows="4" placeholder="Una oportunidad que el ecosistema todavía no está aprovechando es…" oninput="wc(this,'wc6')"></textarea>
+        <div class="wc" id="wc6">0 / 200 palabras</div>
+      </div>
+
+    </div>
+
+    <div class="alert" id="alert-1">Por favor responda al menos las primeras 3 preguntas antes de continuar.</div>
+    <div class="nav">
+      <button class="btn btn-back" onclick="prev(1)">← Volver</button>
+      <span class="nav-label">2 · 5</span>
+      <button class="btn btn-main" onclick="next(1)">Continuar →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- PASO 2 · CADENAS PRODUCTIVAS                         -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="step" id="step-2">
+    <div class="sec-head">
+      <div class="sec-num">Parte II · Las cadenas que sostienen el territorio</div>
+      <div class="sec-title">Las cadenas productivas<br>de Caldas</div>
+      <p class="sec-intro">Nos interesa entender cómo fluye —o no fluye— el valor a lo largo de las cadenas productivas del territorio. No se trata de evaluar ningún sector en particular, sino de identificar dónde se rompe la cadena y dónde se concentra o se pierde el valor.</p>
+    </div>
+
+    <div class="card">
+
+      <div class="nq">
+        <div class="nq-num">Pregunta 1 de 4</div>
+        <div class="nq-text">¿En qué punto de las cadenas productivas de Caldas se pierde más valor? ¿Dónde se rompe el eslabón?</div>
+        <div class="nq-hint">Piense en toda la cadena: desde quién produce la materia prima, quién la transforma, quién la distribuye y quién la consume. ¿Dónde hay desconexión, intermediación excesiva, falta de procesamiento local o dependencia de insumos externos?</div>
+        <textarea id="c1" rows="4" placeholder="En las cadenas productivas de Caldas, el valor se pierde principalmente en…" oninput="wc(this,'wcc1')"></textarea>
+        <div class="wc" id="wcc1">0 / 200 palabras</div>
+      </div>
+
+      <hr class="nq-divider">
+
+      <div class="nq">
+        <div class="nq-num">Pregunta 2 de 4</div>
+        <div class="nq-text">¿Qué potencial productivo del territorio de Caldas considera que está siendo subutilizado o ignorado?</div>
+        <div class="nq-hint">Puede ser un recurso natural, una tradición cultural, una capacidad técnica local, un conocimiento ancestral, una biodiversidad, una ubicación geográfica o cualquier activo territorial que no está siendo aprovechado estratégicamente.</div>
+        <textarea id="c2" rows="4" placeholder="Un potencial que el territorio de Caldas tiene pero no está aprovechando es…" oninput="wc(this,'wcc2')"></textarea>
+        <div class="wc" id="wcc2">0 / 200 palabras</div>
+      </div>
+
+      <hr class="nq-divider">
+
+      <div class="nq">
+        <div class="nq-num">Pregunta 3 de 4</div>
+        <div class="nq-text">¿Hay actores que deberían estar conectados en una misma cadena productiva pero que hoy no se articulan? ¿Por qué cree que no se conectan?</div>
+        <div class="nq-hint">Piense en productores que no llegan a transformadores, en investigadores que no llegan a empresarios, en comunidades que no llegan a mercados. ¿Qué impide esa conexión: desconocimiento, desconfianza, falta de infraestructura, diferencias culturales, ausencia de intermediarios confiables?</div>
+        <textarea id="c3" rows="4" placeholder="Actores que deberían estar conectados pero no lo están, y la razón que se percibe es…" oninput="wc(this,'wcc3')"></textarea>
+        <div class="wc" id="wcc3">0 / 200 palabras</div>
+      </div>
+
+      <hr class="nq-divider">
+
+      <div class="nq">
+        <div class="nq-num">Pregunta 4 de 4</div>
+        <div class="nq-text">¿Qué iniciativa o proyecto concreto podría cambiar significativamente el funcionamiento de una cadena productiva en Caldas en los próximos dos años?</div>
+        <div class="nq-hint">Sea específico si puede. ¿Qué tipo de proyecto, con quiénes, en qué territorio, orientado a qué resultado? No importa si ya existe o si es una idea. Lo que nos interesa es su percepción de qué tipo de intervención tendría mayor impacto.</div>
+        <textarea id="c4" rows="4" placeholder="Una iniciativa que podría transformar una cadena productiva en Caldas sería…" oninput="wc(this,'wcc4')"></textarea>
+        <div class="wc" id="wcc4">0 / 200 palabras</div>
+      </div>
+
+    </div>
+
+    <div class="alert" id="alert-2">Por favor responda al menos las primeras 2 preguntas antes de continuar.</div>
+    <div class="nav">
+      <button class="btn btn-back" onclick="prev(2)">← Volver</button>
+      <span class="nav-label">3 · 5</span>
+      <button class="btn btn-main" onclick="next(2)">Continuar →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- PASO 3 · CUESTIONARIO CONVERGENTE                    -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="step" id="step-3">
+    <div class="sec-head">
+      <div class="sec-num">Parte III · Lectura rápida del sistema</div>
+      <div class="sec-title">Díganos qué ve<br>en el ecosistema</div>
+      <p class="sec-intro">Para cada situación, seleccione la descripción que mejor corresponde a lo que usted <strong>percibe</strong> en el ecosistema productivo de Caldas hoy. No se evalúa a nadie en particular: se describe el sistema tal como funciona.</p>
+    </div>
+
+    <!-- Score panel -->
+    <div class="score-panel">
+      <div class="score-top">
+        <span class="score-title">Índice de madurez ecosistémica</span>
+        <span class="score-num" id="sNum">— / 80</span>
+      </div>
+      <div class="score-rail"><div class="score-car" id="sCar" style="width:0%"></div></div>
+      <div class="score-label" id="sLabel">Seleccione las opciones para calcular el índice</div>
+      <div class="score-sub" id="sSub">10–30 Fragmentado · 31–50 Emergente · 51–65 Articulado · 66–75 Consolidado · 76–80 Inteligente</div>
+    </div>
+
+    <div class="card">
+      <div id="convQs"></div>
+      <div class="alert" id="alert-3">Por favor responda todas las situaciones del cuestionario convergente.</div>
+    </div>
+
+    <div class="nav">
+      <button class="btn btn-back" onclick="prev(3)">← Volver</button>
+      <span class="nav-label">4 · 5</span>
+      <button class="btn btn-main" onclick="next(3)">Continuar →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════ -->
+  <!-- PASO 4 · CIERRE                                      -->
+  <!-- ══════════════════════════════════════════════════════ -->
+  <div class="step" id="step-4">
+    <div class="sec-head">
+      <div class="sec-num">Cierre · Su voz en el diagnóstico</div>
+      <div class="sec-title">Para terminar,<br>una mirada al futuro</div>
+      <p class="sec-intro">Dos preguntas finales para capturar su perspectiva sobre hacia dónde debería ir el ecosistema productivo biocultural de Caldas.</p>
+    </div>
+
+    <div class="card">
+
+      <div class="nq">
+        <div class="nq-num">Pregunta final 1</div>
+        <div class="nq-text">Si tuviera que imaginar el ecosistema productivo de Caldas en 2030, ¿cómo lo describiría en el mejor de los escenarios posibles?</div>
+        <div class="nq-hint">No se preocupe por si es realista o no. Nos interesa su visión de lo que podría ser si las condiciones mejoraran: ¿cómo lucirían las cadenas productivas, las relaciones entre actores, la distribución del valor y el impacto en el territorio?</div>
+        <textarea id="f1" rows="5" placeholder="En el mejor escenario, en 2030 el ecosistema productivo de Caldas sería un lugar donde…" oninput="wc(this,'wcf1')"></textarea>
+        <div class="wc" id="wcf1">0 / 200 palabras</div>
+      </div>
+
+      <hr class="nq-divider">
+
+      <div class="nq">
+        <div class="nq-num">Pregunta final 2</div>
+        <div class="nq-text">¿Hay algo sobre el ecosistema productivo de Caldas que considera importante y que ninguna pregunta le permitió expresar?</div>
+        <div class="nq-hint">Este es un espacio libre. Puede compartir una situación, un dato, una preocupación, una paradoja o cualquier cosa que considere relevante para comprender mejor cómo funciona —o cómo podría funcionar mejor— el ecosistema productivo biocultural de Caldas.</div>
+        <textarea id="f2" rows="4" placeholder="Algo que me parece importante mencionar y que no surgió en las preguntas anteriores es…" oninput="wc(this,'wcf2')"></textarea>
+        <div class="wc" id="wcf2">0 / 200 palabras</div>
+      </div>
+
+    </div>
+
+    <div class="alert" id="alert-4">Por favor responda al menos la primera pregunta antes de enviar.</div>
+    <div class="nav">
+      <button class="btn btn-back" onclick="prev(4)">← Volver</button>
+      <span class="nav-label">5 · 5</span>
+      <button class="btn btn-send" onclick="send()">Enviar mi aporte ✓</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="step" id="step-success">
+    <div class="success">
+      <span class="success-mark">🌿</span>
+      <div class="success-seq" id="sSeq"></div>
+      <h2>Gracias por su aporte</h2>
+      <p>Su perspectiva sobre el ecosistema productivo biocultural de Caldas ha sido registrada y contribuirá al diagnóstico de la investigación doctoral. <br>Pronto se le compartirán los resultados del estudio.</p>
+      <div class="success-btns">
+        <button class="btn btn-back" onclick="location.reload()">↩ Nueva respuesta</button>
+      </div>
+    </div>
+
+    <div class="admin-box">
+      <h3>🗄️ Administración · Datos consolidados</h3>
+      <div class="admin-row">
+        <span class="count-pill" id="aCount">📊 Cargando…</span>
+        <a class="btn btn-main" href="/api/download" download style="font-size:.8rem;padding:.5rem 1.1rem;">📥 Descargar Excel</a>
+      </div>
+      <p style="font-size:.73rem;color:var(--mid);margin-top:.6rem;">El archivo <strong>IDEP_Respuestas_Consolidadas.xlsx</strong> contiene todas las respuestas consolidadas en tiempo real.</p>
+    </div>
+  </div>
+
+  <footer class="footer">
+    <strong>IDEP · RED LAB · Ecosistema Productivo Biocultural de Caldas</strong><br>
+    Investigación Doctoral en Diseño y Creación · Universidad de Caldas · Minciencias · 2025<br><br>
+    Ref. Q1/Q2: Carayannis & Campbell (2010) · Jacobides et al. (2018) · Granstrand & Holgersson (2020) · Gereffi & Fernandez-Stark (2016) · Sölvell (2015) · Jantsch (1980)
+  </footer>
+
+</div><!-- /shell -->
+
+<script>
+const API = window.location.origin;
+
+// ── DATA ─────────────────────────────────────────────────────────────────────
+const TYPOLOGIES = {
+  academia:["Universidad de investigación (R1)","Universidad docente con I+D","Instituto tecnológico / Politécnico","Centro de investigación aplicada","Incubadora o aceleradora universitaria","Laboratorio de innovación abierta","Red académica interinstitucional"],
+  empresa: ["Gran empresa / corporación","Mediana empresa manufacturera o de servicios","PYME de base tecnológica","Startup / empresa emergente","Empresa social / cooperativa","Clúster o asociación sectorial","Empresa tractora de cadena de valor"],
+  gobierno:["Ministerio / secretaría de CTI","Agencia de desarrollo regional","Gobierno local / alcaldía","Entidad regulatoria","Fondo público de financiamiento","Parque tecnológico / zona especial","Corporación de desarrollo económico"],
+  sociedad:["ONG / fundación","Comunidad indígena o campesina","Asociación de consumidores","Red de innovación social","Sindicato o gremio","Colectivo ciudadano de innovación","Organismo multilateral / cooperación"],
+  media:   ["Plataforma digital / datos abiertos","Medio de comunicación especializado","Red o comunidad en línea","Centro de IA o cómputo avanzado","Empresa de telecomunicaciones / TIC","Organización de vigilancia tecnológica","Consorcio de transferencia tecnológica"],
+};
+
+const ECOSYSTEMS = [
+  "Agroindustria y bioeconomía","Manufactura avanzada e industria 4.0",
+  "Tecnologías de información y software","Energías renovables y transición energética",
+  "Salud, farmacéutica y biotecnología","Turismo sostenible y economía creativa",
+  "Logística, transporte y cadena de suministro","Minero-energético y recursos naturales",
+  "Construcción, infraestructura y ciudades inteligentes","Economía circular y gestión ambiental",
+  "Financiero y fintech","Educativo y edtech",
+  "Textil, moda y diseño industrial","Alimentos funcionales y nutrición",
+  "Cultura, patrimonio y saberes biocultural",
+];
+
+const CQS = [
+  {id:"c1",icon:"🔶",dim:"Social + Sistémica",
+   label:"Articulación entre los actores",
+   story:"En el ecosistema productivo de Caldas, la relación entre sus actores (universidades, empresas, gobierno, comunidades…) se parece más a:",
+   opts:["Islas que no se comunican","Encuentros ocasionales sin seguimiento","Redes que existen pero son débiles","Redes que funcionan con altibajos","Colaboración frecuente y fluida","Co-creación con estructura clara","Redes muy integradas y coordinadas","Un ecosistema que se autoorganiza"]},
+  {id:"c2",icon:"🔷",dim:"Económica",
+   label:"Acceso a mercados",
+   story:"Cuando se mira cómo los productos y servicios del ecosistema llegan al mercado, la situación que mejor describe lo que ocurre es:",
+   opts:["Sin acceso real a ningún mercado","Solo mercado local con muchas restricciones","Mercado local que funciona básicamente","Acceso al mercado nacional","Expansión hacia otras regiones del país","Primeros pasos en mercados internacionales","Participación activa en mercados globales","Integración plena en redes globales de valor"]},
+  {id:"c3",icon:"🌱",dim:"Ambiental / Territorial",
+   label:"Arraigo en el territorio",
+   story:"La relación entre el ecosistema productivo y el territorio de Caldas —su cultura, su biodiversidad, sus comunidades— se puede describir como:",
+   opts:["Desconectado: la economía ignora el territorio","Poca relación: la presencia local es mínima","Presencia limitada sin integración real","Relación funcional pero superficial","El ecosistema se integra al territorio","Hay una identidad productiva territorial clara","El territorio y el ecosistema se refuerzan mutuamente","Coevolución: el ecosistema y el territorio crecen juntos"]},
+  {id:"c4",icon:"⚙️",dim:"Tecnológica",
+   label:"Innovación y tecnología",
+   story:"En cuanto a la capacidad de innovar y adoptar tecnología, lo que se observa en el ecosistema de Caldas es:",
+   opts:["No hay capacidades tecnológicas visibles","Tecnología básica, muy poco desarrollo","Innovación que aparece de vez en cuando","Innovación funcional en algunos sectores","Innovación sistemática en varios actores","Alta capacidad tecnológica en sectores clave","El ecosistema se comporta como innovador","Innovación continua, incluyendo disrupciones"]},
+  {id:"c5",icon:"🔶",dim:"Económica + Gobernanza",
+   label:"Distribución del valor generado",
+   story:"Cuando el ecosistema genera valor económico, ¿cómo se distribuye ese valor entre los actores del territorio? Lo que se observa es:",
+   opts:["Todo se concentra en muy pocos actores","Hay alta desigualdad en la distribución","Solo algunos actores capturan valor","Distribución funcional pero con desequilibrios","Distribución relativamente equilibrada","La captura de valor se comparte estructuralmente","Hay gobernanza económica para distribuir el valor","Arquitectura estratégica del valor compartido"]},
+  {id:"c6",icon:"🔷",dim:"Social",
+   label:"Confianza entre actores",
+   story:"Si tuviera que describir el nivel de confianza que existe entre los actores del ecosistema (para compartir información, hacer acuerdos, colaborar), diría que:",
+   opts:["Hay desconfianza generalizada","La confianza es mínima y muy frágil","Las relaciones existen pero son débiles","Hay confianza funcional para cosas básicas","La cooperación es estable entre varios actores","Hay alta confianza y capital social consolidado","El capital social es un activo reconocido del ecosistema","La confianza es sistémica: el ecosistema se basa en ella"]},
+  {id:"c7",icon:"🌱",dim:"Ambiental + Complejidad",
+   label:"Resiliencia y sostenibilidad",
+   story:"Cuando el ecosistema enfrenta crisis, cambios o perturbaciones externas (económicas, climáticas, políticas), su capacidad de respuesta y adaptación es:",
+   opts:["Muy baja: el ecosistema es altamente vulnerable","Baja: le cuesta mucho recuperarse","Limitada: se adapta pero con grandes dificultades","Funcional: hay resiliencia básica","Estructurada: la adaptación está organizada","En desarrollo hacia la sostenibilidad real","Alta: el ecosistema absorbe y aprende de las crisis","Coevolutiva: el ecosistema se transforma con el entorno"]},
+  {id:"c8",icon:"⚙️",dim:"Tecnológica + Cognitiva",
+   label:"Circulación del conocimiento",
+   story:"El conocimiento que se genera en el ecosistema (en universidades, empresas, comunidades, instituciones) circula entre los actores de la siguiente manera:",
+   opts:["No circula: cada actor guarda su conocimiento","Fluye muy poco, de manera muy limitada","Hay transferencias ocasionales y puntuales","Fluye de manera funcional en algunos circuitos","Hay intercambio frecuente entre varios actores","Existen redes de conocimiento activas","El conocimiento circula de forma distribuida","Hay inteligencia colectiva: el sistema aprende junto"]},
+  {id:"c9",icon:"🔶",dim:"Económica + Competitividad",
+   label:"Diversidad de la base productiva",
+   story:"La base productiva del ecosistema de Caldas —los sectores, productos y capacidades que lo sostienen— se puede describir como:",
+   opts:["Monosectorial: depende de uno o dos productos","Poca diversificación, alta vulnerabilidad","Hay diversificación pero todavía incipiente","Diversificación funcional con varios sectores activos","Múltiples sectores con dinámica propia","Especialización inteligente en nichos de valor","Alta sofisticación productiva en varios sectores","Diversificación estratégica adaptativa al mercado global"]},
+  {id:"c10",icon:"🔷",dim:"Sistémica + Arquitectura",
+   label:"Coordinación del ecosistema",
+   story:"Si se observa el ecosistema como un todo —cómo se coordina, cómo se toman decisiones, cómo se organiza— la imagen que mejor lo describe es:",
+   opts:["Caótico: nadie coordina nada","Desorganizado: hay actores pero sin estructura","Organización incipiente: se empieza a ordenar","Coordinación básica en algunos espacios","Estructura funcional con roles más o menos claros","Gobernanza estructurada con liderazgos reconocidos","Sistema integrado con arquitectura clara","Ecosistema con arquitectura optimizada y adaptativa"]},
+];
+
+const STEP_NAMES = ["Identificación","Narrativa del ecosistema","Cadenas productivas","Cuestionario convergente","Cierre"];
+
+// ── STATE ─────────────────────────────────────────────────────────────────────
+const S = {
+  actorId:null, actorLabel:null, typology:"",
+  ecosystems:[], convScores:{},
+};
+
+// ── INIT ──────────────────────────────────────────────────────────────────────
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('f_fecha').value = new Date().toLocaleDateString('es-CO');
+  buildDots(); buildEcos(); buildConvQs(); updateProgress(0); loadCount();
+});
+
+function loadCount(){
+  fetch(API+'/api/count').then(r=>r.json()).then(d=>{
+    const n=d.count||0;
+    const el=document.getElementById('aCount');
+    if(el) el.textContent=`📊 ${n} aporte${n===1?'':'s'} registrado${n===1?'':'s'}`;
+  }).catch(()=>{});
+}
+
+// ── PROGRESS ──────────────────────────────────────────────────────────────────
+function buildDots(){
+  const w=document.getElementById('dots'); w.innerHTML='';
+  STEP_NAMES.forEach((_,i)=>{
+    const d=document.createElement('div');
+    d.className='dot'+(i===0?' active':''); d.id='dot-'+i; w.appendChild(d);
+  });
+}
+function updateProgress(s){
+  const pct=Math.round(((s+1)/5)*100);
+  document.getElementById('pCar').style.width=pct+'%';
+  document.getElementById('pLabel').textContent=STEP_NAMES[s]||'';
+  document.getElementById('pFrac').textContent=`${s+1} · 5`;
+  document.querySelectorAll('.dot').forEach((d,i)=>{
+    d.className='dot'+(i<s?' done':i===s?' active':'');
+  });
+}
+function showStep(n){
+  document.querySelectorAll('.step').forEach(s=>s.classList.remove('active'));
+  const t=document.getElementById('step-'+(n==='success'?'success':n));
+  if(t){t.classList.add('active');window.scrollTo({top:0,behavior:'smooth'});}
+  if(n!=='success') updateProgress(n);
+  else document.getElementById('progressShell').style.display='none';
+}
+
+// ── ECOSYSTEMS ────────────────────────────────────────────────────────────────
+function buildEcos(){
+  const w=document.getElementById('ecoWrap');
+  ECOSYSTEMS.forEach(e=>{
+    const c=document.createElement('div'); c.className='eco-chip'; c.textContent=e; c.dataset.e=e;
+    c.addEventListener('click',()=>toggleEco(c,e)); w.appendChild(c);
+  });
+}
+function toggleEco(el,e){
+  if(el.classList.contains('active')){el.classList.remove('active');S.ecosystems=S.ecosystems.filter(x=>x!==e);}
+  else{if(S.ecosystems.length>=3)return;el.classList.add('active');S.ecosystems.push(e);}
+  document.getElementById('ecoCount').textContent=S.ecosystems.length;
+  document.querySelectorAll('.eco-chip').forEach(c=>{
+    if(!c.classList.contains('active')&&S.ecosystems.length>=3)c.classList.add('locked');
+    else c.classList.remove('locked');
+  });
+}
+
+// ── ACTOR ─────────────────────────────────────────────────────────────────────
+function pickActor(el){
+  document.querySelectorAll('.actor-pill').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active');
+  S.actorId=el.dataset.id; S.actorLabel=el.dataset.label;
+  const tf=document.getElementById('typologyField'); tf.style.display='block';
+  const sel=document.getElementById('f_typology');
+  sel.innerHTML='<option value="">— Seleccione —</option>';
+  (TYPOLOGIES[S.actorId]||[]).forEach(t=>{const o=document.createElement('option');o.value=t;o.textContent=t;sel.appendChild(o);});
+  const info=document.getElementById('actorInfo');
+  info.className='info on';
+  info.innerHTML=`Hablará desde la perspectiva de: <strong>${S.actorLabel}</strong>`;
+}
+
+// ── WORD COUNT ────────────────────────────────────────────────────────────────
+function wc(ta,wcId){
+  const w=ta.value.trim()?ta.value.trim().split(/\s+/).length:0;
+  const el=document.getElementById(wcId);
+  el.textContent=`${w} / 200 palabras${w>200?' ⚠ excedido':''}`;
+  el.className='wc'+(w>200?' over':'');
+}
+
+// ── CONVERGENT ────────────────────────────────────────────────────────────────
+function buildConvQs(){
+  const w=document.getElementById('convQs');
+  CQS.forEach((q,qi)=>{
+    const div=document.createElement('div'); div.className='conv-q'; div.id='cq-'+q.id;
+    const optsHtml=q.opts.map((opt,i)=>
+      `<button class="conv-btn" data-qid="${q.id}" data-val="${i+1}" onclick="pickConv(this)">${opt}</button>`
+    ).join('');
+    div.innerHTML=`
+      <div class="conv-head">
+        <span class="conv-icon">${q.icon}</span>
+        <span class="conv-label">${q.label}</span>
+        <span class="conv-dim">${q.dim}</span>
+      </div>
+      <div class="conv-narrative">${q.story}</div>
+      <div class="conv-opts">${optsHtml}</div>
+    `;
+    w.appendChild(div);
+  });
+}
+function pickConv(btn){
+  const qid=btn.dataset.qid; const val=parseInt(btn.dataset.val);
+  document.querySelectorAll(`.conv-btn[data-qid="${qid}"]`).forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  S.convScores[qid]=val;
+  updateScore();
+}
+function updateScore(){
+  const vals=Object.values(S.convScores).map(Number);
+  const total=vals.reduce((a,b)=>a+b,0);
+  const answered=vals.length;
+  document.getElementById('sNum').textContent=`${total} / ${answered*8||80}`;
+  const pct=total/80*100;
+  document.getElementById('sCar').style.width=pct+'%';
+  if(answered===0){document.getElementById('sLabel').textContent='Seleccione las opciones para calcular el índice';return;}
+  let label='', color='var(--amber)';
+  if(total<=30){label='Ecosistema Fragmentado';color='#c0573a';}
+  else if(total<=50){label='Ecosistema Emergente';color='var(--amber)';}
+  else if(total<=65){label='Ecosistema Articulado';color='var(--fern)';}
+  else if(total<=75){label='Ecosistema Consolidado';color='#7aab8a';}
+  else{label='Ecosistema Inteligente / Adaptativo';color='#4aab7a';}
+  document.getElementById('sLabel').textContent=answered<10?`${answered}/10 respondidas · Puntaje parcial: ${total}`:`✅ Puntaje: ${total} · ${label}`;
+  document.getElementById('sLabel').style.color=color;
+}
+
+// ── NAVIGATION ────────────────────────────────────────────────────────────────
+function v(id){const e=document.getElementById(id);return e&&e.value.trim();}
+function hasText(id){return (document.getElementById(id)||{}).value?.trim().length>10;}
+
+function next(s){
+  const al=document.getElementById('alert-'+s); al.classList.remove('on');
+  if(s===0){
+    if(!v('f_nombre')||!v('f_email')||!v('f_org')||!S.actorId){al.classList.add('on');return;}
+  }
+  if(s===1){
+    if(!hasText('n1')||!hasText('n2')||!hasText('n3')){al.classList.add('on');return;}
+  }
+  if(s===2){
+    if(!hasText('c1')||!hasText('c2')){al.classList.add('on');return;}
+  }
+  if(s===3){
+    if(CQS.some(q=>!S.convScores[q.id])){al.classList.add('on');return;}
+  }
+  showStep(s+1);
+}
+function prev(s){showStep(s-1);}
+
+// ── SUBMIT ────────────────────────────────────────────────────────────────────
+async function send(){
+  const al=document.getElementById('alert-4'); al.classList.remove('on');
+  if(!hasText('f1')){al.classList.add('on');return;}
+
+  const payload={
+    // Identification
+    nombre:v('f_nombre'), cargo:v('f_cargo'), email:v('f_email'),
+    telefono:v('f_telefono'), organizacion:v('f_org'),
+    ciudad:v('f_ciudad'), region:v('f_region'), fecha:v('f_fecha'),
+    actorLabel:S.actorLabel, actorId:S.actorId,
+    typology:document.getElementById('f_typology').value,
+    ecosystems:S.ecosystems,
+    // Part I
+    narrativa_descripcion:     document.getElementById('n1').value,
+    narrativa_nudos:           document.getElementById('n2').value,
+    narrativa_fuerzas:         document.getElementById('n3').value,
+    narrativa_articulacion:    document.getElementById('n4').value,
+    narrativa_necesidades:     document.getElementById('n5').value,
+    narrativa_oportunidades:   document.getElementById('n6').value,
+    // Part II
+    cadena_ruptura:            document.getElementById('c1').value,
+    cadena_potencial:          document.getElementById('c2').value,
+    cadena_desconexion:        document.getElementById('c3').value,
+    cadena_iniciativa:         document.getElementById('c4').value,
+    // Convergent
+    convergentScores:S.convScores,
+    convergentTotal:Object.values(S.convScores).reduce((a,b)=>a+b,0),
+    // Closure
+    futuro_vision:             document.getElementById('f1').value,
+    futuro_adicional:          document.getElementById('f2').value,
+  };
+
+  document.getElementById('veil').classList.add('on');
+  try{
+    const res=await fetch(API+'/api/submit',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)});
+    const data=await res.json();
+    document.getElementById('veil').classList.remove('on');
+    if(data.ok){
+      document.getElementById('sSeq').textContent=`Aporte N° ${String(data.seq).padStart(3,'0')} registrado ✓`;
+      showStep('success'); loadCount();
+    } else { alert('Error al guardar: '+data.error); }
+  } catch(e){
+    document.getElementById('veil').classList.remove('on');
+    alert('No se pudo conectar con el servidor.\n'+e.message);
+  }
+}
+</script>
+</body>
+</html>

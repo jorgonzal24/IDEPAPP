@@ -1,0 +1,189 @@
+ 
+# Archivos temporales Excel
+~$*.xlsx
+*.xlsx
+
+# Datos y respuestas
+data/
+idep_server/data/
+
+# PDFs
+*.pdf
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Carpetas duplicadas
+IDEP_APP_WEB/
+3. Ahora agregue solo los archivos correctos
+cmd
+git add .gitignore
+git add server.py
+git add static/index.html
+git add requirements.txt
+4. Verificar que solo están esos archivos
+cmd
+git status
+Debe ver únicamente:
+
+new file:   .gitignore
+modified:   server.py
+modified:   static/index.html
+5. Confirmar y subir
+cmd
+git commit -m "IDEP v3 narrativo - servidor y formulario actualizados"
+git push origin main
+⚠️ Los archivos Excel con respuestas nunca deben subirse a GitHub porque contienen datos personales de los participantes. El .gitignore los protege automáticamente en el futuro.
+
+D:\APPS\IDEP_APP_WEB>git status
+On branch main
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   IDEP_Respuestas_Consolidadas 2.xlsx
+        new file:   IDEP_Respuestas_Consolidadas.xlsx
+        new file:   Instrumento/index.html
+        new file:   Instrumento/server.py
+        modified:   idep_server/data/IDEP_Respuestas_Consolidadas.xlsx
+        new file:   ~$IDEP_Respuestas_Consolidadas.xlsx
+Changes not staged for commit:
+  (use "git add/rm <file>..." to update what will be committed)
+  (use "git restore <file>..." to discard changes in working directory)
+        deleted:    IDEP_Respuestas_Consolidadas 2.xlsx
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        __pycache__/
+        server.py
+        static/
+
+Mostrar más
+7:14
+El git reset no funcionó completamente. Ejecute esto paso a paso:
+
+1. Quitar TODO del staging de una vez
+cmd
+git rm --cached -r .
+2. Crear el .gitignore
+cmd
+notepad .gitignore
+Pegue esto, guarde y cierre:
+
+*.xlsx
+~$*
+*.pdf
+__pycache__/
+*.pyc
+data/
+idep_server/
+IDEP_APP_WEB/
+Instrumento/
+3. Agregar solo los archivos correctos
+cmd
+git add .gitignore
+git add server.py
+git add static\index.html
+git add requirements.txt
+git add README.md
+4. Verificar que quedó limpio
+cmd
+git status
+Debe mostrar únicamente algo así:
+
+new file:   .gitignore
+modified:   server.py
+modified:   static/index.html
+5. Subir
+cmd
+git commit -m "IDEP v3 - limpieza y actualizacion"
+git push origin main
+💡 Si en el paso 4 todavía aparecen archivos .xlsx o PDFs en verde, dígame y los removemos uno por uno antes de hacer el commit.
+
+D:\APPS\IDEP_APP_WEB>git status
+On branch main
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        new file:   IDEP_Respuestas_Consolidadas 2.xlsx
+        new file:   IDEP_Respuestas_Consolidadas.xlsx
+        new file:   Instrumento/index.html
+        new file:   Instrumento/server.py
+        modified:   idep_server/data/IDEP_Respuestas_Consolidadas.xlsx
+        new file:   ~$IDEP_Respuestas_Consolidadas.xlsx
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        __pycache__/
+        server.py
+        static/
+
+Mostrar más
+7:45
+El problema es que esos archivos ya estaban en el staging antes del .gitignore. Ejecute estos comandos uno por uno:
+
+1. Quitar cada archivo del staging individualmente
+cmd
+git rm --cached "IDEP_Respuestas_Consolidadas.xlsx"
+cmd
+git rm --cached "IDEP_Respuestas_Consolidadas 2.xlsx"
+cmd
+git rm --cached "~$IDEP_Respuestas_Consolidadas.xlsx"
+cmd
+git rm --cached "Instrumento/index.html"
+cmd
+git rm --cached "Instrumento/server.py"
+cmd
+git rm --cached "idep_server/data/IDEP_Respuestas_Consolidadas.xlsx"
+2. Verificar que quedó limpio
+cmd
+git status
+3. Si quedó limpio, agregar solo lo correcto
+cmd
+git add .gitignore
+git add server.py
+git add static\index.html
+git add requirements.txt
+4. Subir
+cmd
+git commit -m "IDEP v3 actualizado"
+git push origin main
+D:\APPS\IDEP_APP_WEB>git status
+On branch main
+Changes to be committed:
+  (use "git restore --staged <file>..." to unstage)
+        deleted:    idep_server/data/IDEP_Respuestas_Consolidadas.xlsx
+Untracked files:
+  (use "git add <file>..." to include in what will be committed)
+        IDEP_Respuestas_Consolidadas 2.xlsx
+        IDEP_Respuestas_Consolidadas.xlsx
+        Instrumento/
+        __pycache__/
+        idep_server/data/
+        server.py
+        static/
+        ~$IDEP_Respuestas_Consolidadas.xlsx
+
+Mostrar más
+7:47
+Perfecto, ya casi está limpio. Ahora ejecute estos 4 comandos:
+
+1. Confirmar la eliminación del Excel del servidor
+cmd
+git add .gitignore
+git add server.py
+git add static\index.html
+git add requirements.txt
+2. Verificar
+cmd
+git status
+Debe ver solo:
+
+deleted:  idep_server/data/IDEP_Respuestas_Consolidadas.xlsx
+new file: .gitignore
+modified: server.py
+modified: static/index.html
+3. Commit y push
+cmd
+git commit -m "IDEP v3 actualizado"
+git push origin main
+💡 Los archivos que aparecen en Untracked files (los .xlsx, Instrumento/, __pycache__/) están protegidos por el .gitignore y no se subirán. Eso es exactamente lo que queremos.
+
+
+
